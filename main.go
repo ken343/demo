@@ -75,7 +75,9 @@ func main() {
 			formalVal == FORMALITYDEFAULT
 		}
 
-		n, err := w.Write([]byte(formalVal))
+		greeting := mEnglish[formalVal]
+
+		n, err := w.Write([]byte(greeting))
 		errorCheck(err)
 		fmt.Printf("Wrote %d bytes", n)
 	})
