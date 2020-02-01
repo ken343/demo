@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 )
 
 // These values represent the default values that the flags should get
@@ -41,7 +44,7 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Howdy")
+	fmt.Println("Howdy Revature!")
 
 	// Setup Server Multiplexers
 	englishMux := http.NewServeMux()
@@ -62,27 +65,70 @@ func main() {
 
 		n, err := w.Write([]byte(greeting))
 		errorCheck(err)
-		fmt.Printf("Wrote %d bytes\n", n)
+		fmt.Printf("Wrote %d bytes in English\n", n)
 	})
 	// Spanish Handlers
+	spanishMux.HandleFunc("/spanish", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		formalVal, err := strconv.ParseInt(r.Form.Get("formal"), 10, 64)
+		errorCheck(err)
+
+		if formalVal == 0 {
+			formalVal = FORMALITYDEFAULT
+		}
+
+		greeting := mSpanish[formalVal] + "\n"
+
+		n, err := w.Write([]byte(greeting))
+		errorCheck(err)
+		fmt.Printf("Wrote %d bytes in Spanish\n", n)
+	})
 
 	// Russian Handlers
+	russianMux.HandleFunc("/russian", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		formalVal, err := strconv.ParseInt(r.Form.Get("formal"), 10, 64)
+		errorCheck(err)
+
+		if formalVal == 0 {
+			formalVal = FORMALITYDEFAULT
+		}
+
+		greeting := mRussian[formalVal] + "\n"
+
+		n, err := w.Write([]byte(greeting))
+		errorCheck(err)
+		fmt.Printf("Wrote %d bytes in Russian\n", n)
+	})
 
 	go func() {
 		err := http.ListenAndServe(ENGLISHPORT, englishMux)
 		errorCheck(err)
 	}()
-	fmt.Println("English Greeting listening on port 8081")
+	fmt.Println("English Greeting listening on port 8081...")
 
 	go func() {
 		err := http.ListenAndServe(SPANISHPORT, spanishMux)
 		errorCheck(err)
 	}()
-	fmt.Println("Spanish Greeting listens on port 8082")
+	fmt.Println("Spanish Greeting listens on port 8082...")
 
-	err := http.ListenAndServe(RUSSIANPORT, russianMux)
-	errorCheck(err)
-	fmt.Println("Russian Greeting listens on port 8083")
+	go func() {
+		err := http.ListenAndServe(RUSSIANPORT, russianMux)
+		errorCheck(err)
+	}()
+	fmt.Println("Russian Greeting listens on port 8083...")
+
+	shutDown := make(chan os.Signal, 1)
+	signal.Notify(shutDown, syscall.SIGINT)
+
+	for {
+		select {
+		case sig := <-shutDown:
+			fmt.Println("\nShutting down server cluster:", sig)
+			os.Exit(0)
+		}
+	}
 }
 
 func errorCheck(e error) {
