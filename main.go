@@ -33,13 +33,13 @@ func init() {
 	mEnglish[SEMIFORMAL] = "Hello!"
 	mEnglish[INFORMAL] = "Hey!"
 
-	mSpanish[FORMAL] = "Buenos Dias!"
-	mSpanish[SEMIFORMAL] = "Hola!"
-	mSpanish[INFORMAL] = "Que tal?"
+	mSpanish[FORMAL] = "¡Buenos días!"
+	mSpanish[SEMIFORMAL] = "¡Hola!"
+	mSpanish[INFORMAL] = "¿Qué pasa?"
 
-	mRussian[FORMAL] = "Dobre Den"
-	mRussian[SEMIFORMAL] = "Zdrastvutye"
-	mRussian[INFORMAL] = "Preevet"
+	mRussian[FORMAL] = "Добрый день!"
+	mRussian[SEMIFORMAL] = "Здравствуйте!"
+	mRussian[INFORMAL] = "Привет!"
 
 }
 
