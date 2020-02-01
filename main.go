@@ -101,6 +101,8 @@ func main() {
 		fmt.Printf("Wrote %d bytes in Russian\n", n)
 	})
 
+	// Start listening on servers
+
 	go func() {
 		err := http.ListenAndServe(ENGLISHPORT, englishMux)
 		errorCheck(err)
@@ -111,13 +113,15 @@ func main() {
 		err := http.ListenAndServe(SPANISHPORT, spanishMux)
 		errorCheck(err)
 	}()
-	fmt.Println("Spanish Greeting listens on port 8082...")
+	fmt.Println("Spanish Greeting listening on port 8082...")
 
 	go func() {
 		err := http.ListenAndServe(RUSSIANPORT, russianMux)
 		errorCheck(err)
 	}()
-	fmt.Println("Russian Greeting listens on port 8083...")
+	fmt.Println("Russian Greeting listening on port 8083...")
+
+	// Send shutdown signal via syscall.SIGINT
 
 	shutDown := make(chan os.Signal, 1)
 	signal.Notify(shutDown, syscall.SIGINT)
