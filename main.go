@@ -52,7 +52,7 @@ func main() {
 	russianMux := http.NewServeMux()
 
 	// English Handlers
-	englishMux.HandleFunc("/english", func(w http.ResponseWriter, r *http.Request) {
+	englishMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		formalVal, err := strconv.ParseInt(r.Form.Get("formal"), 10, 64)
 		errorCheck(err)
@@ -68,7 +68,7 @@ func main() {
 		fmt.Printf("Wrote %d bytes in English\n", n)
 	})
 	// Spanish Handlers
-	spanishMux.HandleFunc("/spanish", func(w http.ResponseWriter, r *http.Request) {
+	spanishMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		formalVal, err := strconv.ParseInt(r.Form.Get("formal"), 10, 64)
 		errorCheck(err)
@@ -85,7 +85,7 @@ func main() {
 	})
 
 	// Russian Handlers
-	russianMux.HandleFunc("/russian", func(w http.ResponseWriter, r *http.Request) {
+	russianMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		formalVal, err := strconv.ParseInt(r.Form.Get("formal"), 10, 64)
 		errorCheck(err)
