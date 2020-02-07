@@ -137,6 +137,6 @@ func main() {
 
 func errorCheck(e error) {
 	if e != nil {
-		log.Fatalf("Error: %w", e)
+		log.Fatalf("Error: %v", e)
 	}
 }
